@@ -12,7 +12,7 @@ from kneed import KneeLocator
 
 
 # emojis list: https://www.webfx.com/tools/emoji-cheat-sheet/
-st.set_page_config(page_title="GF API explorer", page_icon="🎗", layout="wide")
+st.set_page_config(page_title="TGF Allocations API", page_icon="🎗", layout="wide")
 
 # Use local CSS
 def local_css(file_name):
