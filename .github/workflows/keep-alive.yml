@@ -19,7 +19,7 @@ jobs:
       run: |
         git config --global user.email "AdrienDBe@users.noreply.github.com"
         git config --global user.name "AdrienDBe"
-        git commit --allow-empty -m "chore: keep-alive commit"
+        git commit --allow-empty -m "chore: keep-alive $(date)"
 
     - name: Push changes
       env:
