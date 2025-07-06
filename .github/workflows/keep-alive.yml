@@ -1,27 +1,31 @@
 name: Keep App Alive
-
 on:
   schedule:
     - cron: '0 */5 * * *'  # Toutes les 5 heures
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   keep-alive:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4  # Ensure using v3 for Node.js 20 support
-    - name: Create an empty commit
-      run: |
-        git config --global user.email "AdrienDBe@users.noreply.github.com"
-        git config --global user.name "AdrienDBe"
-        git commit --allow-empty -m "chore: keep-alive commit"
-        git commit --allow-empty -m "chore: keep-alive $(date)"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
 
-    - name: Push changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-      run: |
-        git push
+      - name: Set up Git config
+        run: |
+          git config user.email "AdrienDBe@users.noreply.github.com"
+          git config user.name "AdrienDBe"
+
+      - name: Create keep-alive commit
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/AdrienDBe/EVM.git
+          git pull origin main --rebase
+          git commit --allow-empty -m "keep-alive: $(date '+%Y-%m-%d %H:%M:%S')"
+          git push origin main
