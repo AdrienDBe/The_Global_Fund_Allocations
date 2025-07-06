@@ -25,7 +25,7 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/AdrienDBe/EVM.git
+          git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/AdrienDBe/The_Global_Fund_Allocations.git
           git pull origin main --rebase
           git commit --allow-empty -m "keep-alive: $(date '+%Y-%m-%d %H:%M:%S')"
           git push origin main
