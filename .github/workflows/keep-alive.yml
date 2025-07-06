@@ -1,12 +1,27 @@
-name: Keep Streamlit App Alive
+name: Keep App Alive
+
 on:
   schedule:
-    - cron: '0 * * * *'  # toutes les heures
-  workflow_dispatch:
+    - cron: '0 */5 * * *'  # Toutes les 5 heures
+  push:
+    branches:
+      - main
 
 jobs:
-  ping:
+  keep-alive:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Streamlit app
-        run: curl -s -o /dev/null -w "%{http_code}" https://theglobalfundallocations.streamlit.app/
+    - name: Checkout repository
+      uses: actions/checkout@v4  # Ensure using v3 for Node.js 20 support
+    - name: Create an empty commit
+      run: |
+        git config --global user.email "AdrienDBe@users.noreply.github.com"
+        git config --global user.name "AdrienDBe"
+        git commit --allow-empty -m "chore: keep-alive commit"
+        git commit --allow-empty -m "chore: keep-alive $(date)"
+
+    - name: Push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      run: |
+        git push
